@@ -1,12 +1,16 @@
-# vllm-huggingface
-Make vllm-openai Docker container compatible with HuggingFace Inference Endpoints. Specifically, the most recent VLLM version supports vision language models like Phi-3-vision that Text Generation Inference does not yet support, so this repo is useful for deploying those VLM models not supported by TGI.
+# VLLM container for HuggingFace Inference Endpoints
 
-This repo was heavily inspired by https://github.com/philschmid/vllm-huggingface, but is simpler because it does not fork from vllm. 
+This repo publish a VLLM container that is compatible with HuggingFace Inference Endpoints.
 
-# General Setup
+# Installation
 
-1. Install dependencies with `poetry install`. If using `poetry` as your environment manager, run `poetry shell` to activate your environment. 
-2. Add a `.env` file in the root directory with `HF_TOKEN` defined as a read/write token from [huggingface](https://huggingface.co/settings/tokens). See `.env.example` for how to format.
+```bash
+uv sync
+```
+
+```bash
+cp .env.example .env
+```
 
 # Deploy to HuggingFace Endpoint
 

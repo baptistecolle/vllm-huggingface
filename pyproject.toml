@@ -1,16 +1,10 @@
-[tool.poetry]
+[project]
 name = "vllm-huggingface"
 version = "0.1.0"
-description = ""
-authors = ["Yushi Homma <hommayushi3@gmail.com>"]
+description = "Docker container compatible with HuggingFace Inference Endpoints"
 readme = "README.md"
-
-[tool.poetry.dependencies]
-python = "^3.10"
-huggingface-hub = "^0.24.5"
-python-dotenv = "^1.0.1"
-openai = "^1.40.2"
-
-[build-system]
-requires = ["poetry-core"]
-build-backend = "poetry.core.masonry.api"
+requires-python = ">=3.11"
+dependencies = [
+    "huggingface-hub",
+    "python-dotenv",
+]

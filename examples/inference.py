@@ -1,4 +1,4 @@
-from openai import OpenAI
+from huggingface_hub import InferenceClient
 import os
 from dotenv import load_dotenv
 from time import time
@@ -6,17 +6,16 @@ from multiprocessing.pool import ThreadPool
 
 
 load_dotenv() 
-ENDPOINT_URL = os.getenv("HF_ENDPOINT_URL") + "/v1/" # if endpoint object is not available check the UI 
+ENDPOINT_URL = os.getenv("HF_ENDPOINT_URL")  # if endpoint object is not available check the UI 
 API_KEY = os.getenv("HF_TOKEN")
 STREAM = False
 
-# initialize the client but point it to TGI
-client = OpenAI(base_url=ENDPOINT_URL, api_key=API_KEY)
+# initialize the client
+client = InferenceClient(model=ENDPOINT_URL, token=API_KEY)
 
 
 def predict(messages):
-    return client.chat.completions.create(
-        model="/repository", # needs to be /repository since there are the model artifacts stored
+    return client.chat_completion(
         messages=messages,
         max_tokens=30,
         temperature=0.0,
