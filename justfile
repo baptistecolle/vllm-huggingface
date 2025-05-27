@@ -2,7 +2,7 @@
     uv run scripts/deploy.py
 
 @inference endpoint-url:
-    uv run scripts/inference.py --endpoint-url $endpoint-url
+    uv run scripts/inference.py --endpoint-url {{endpoint-url}}
 
 [working-directory: 'docker']
 @build:

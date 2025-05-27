@@ -1,4 +1,4 @@
-from huggingface_hub import InferenceClient
+from openai import OpenAI
 import os
 from dotenv import load_dotenv
 from time import time
@@ -13,17 +13,22 @@ def parse_args():
     return parser.parse_args()
 
 def main():
-    
     args = parse_args()
-
-    client = InferenceClient(model=args.endpoint_url)
+    
+    # Initialize the client but point it to TGI
+    client = OpenAI(
+        base_url=args.endpoint_url + "/v1/",  # Add /v1/ to the endpoint URL
+        api_key=os.getenv("HF_TOKEN")
+    )
+    
     messages = [
         {"role": "user", "content": "How are you?"}
     ]
 
     start = time()
     
-    response = client.chat_completion(
+    response = client.chat.completions.create(
+        model="/repository",  # needs to be /repository since there are the model artifacts stored
         messages=messages,
         max_tokens=30,
         temperature=0.0,
@@ -32,7 +37,6 @@ def main():
     
     print(f"Response: {response}")
     print(f"Time taken: {time() - start:.2f}s")
-
 
 if __name__ == "__main__":
     main()
