@@ -9,13 +9,13 @@ def parse_args():
     parser = argparse.ArgumentParser(description="Deploy a model to Hugging Face Endpoints")
     
     # Model and deployment settings
-    parser.add_argument("--repo_id", type=str, default="Qwen/Qwen3-4B",
+    parser.add_argument("--repo_id", type=str, default="data-agents/data-agents-qwen3-4b",
                       help="Hugging Face model repository ID")
     parser.add_argument("--name", type=str, default=None,
                       help="Endpoint name (defaults to repo_id basename)")
     parser.add_argument("--framework", type=str, default="pytorch",
                       help="Framework to use")
-    parser.add_argument("--task", type=str, default="custom",
+    parser.add_argument("--task", type=str, default="text-generation",
                       help="Task type")
     parser.add_argument("--accelerator", type=str, default="gpu",
                       help="Accelerator type")
@@ -29,11 +29,11 @@ def parse_args():
                       help="Instance size")
     parser.add_argument("--instance_type", type=str, default="nvidia-l4",
                       help="Instance type")
-    parser.add_argument("--min-replica", type=str, default="0",
+    parser.add_argument("--min-replica", type=int, default=0,
                         help="Minimum number of replicas")
-    parser.add_argument("--max-replica", type=str, default="1",
+    parser.add_argument("--max-replica", type=int, default=1,
                         help="Maximum number of replicas")
-    parser.add_argument("--scale-to-zero-timeout", type=str, default="60",
+    parser.add_argument("--scale-to-zero-timeout", type=int, default=60,
                         help="Scale to zero timeout")
 
     # Environment variables
@@ -77,6 +77,7 @@ if __name__ == "__main__":
         # "USE_V2_BLOCK_MANAGER": args.use_v2_block_manager,
         # "VLLM_ATTENTION_BACKEND": args.vllm_attention_backend,
         # "TRUST_REMOTE_CODE": args.trust_remote_code,
+        "VLLM_LOGGING_LEVEL": "DEBUG"
     }
 
     endpoint = create_inference_endpoint(
@@ -95,8 +96,8 @@ if __name__ == "__main__":
             "env": env_vars,
             "url": VLLM_HF_IMAGE_URL,
         },
-        min_replicas=args.min_replica,
-        max_replicas=args.max_replica,
+        min_replica=args.min_replica,
+        max_replica=args.max_replica,
         scale_to_zero_timeout=args.scale_to_zero_timeout,
         # token=os.getenv("HF_TOKEN"),
     )
