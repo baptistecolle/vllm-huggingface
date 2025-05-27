@@ -1,11 +1,7 @@
 # Set TGI like environment variables
 NUM_SHARD=${NUM_SHARD:-$(nvidia-smi --list-gpus | wc -l)}
 
-if [ -z "$MODEL_PATH" ]; then
-    echo "MODEL_PATH is not set"
-    exit 1
-fi
-
+MODEL_PATH=${MODEL_PATH:-"/repository"}
 # MAX_MODEL_LEN=${MAX_MODEL_LEN:-1}
 # MAX_NUM_BATCHED_TOKENS=${MAX_NUM_BATCHED_TOKENS:-1}
 # ENABLE_CHUNKED_PREFILL=${ENABLE_CHUNKED_PREFILL:-false}

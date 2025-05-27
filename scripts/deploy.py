@@ -29,7 +29,13 @@ def parse_args():
                       help="Instance size")
     parser.add_argument("--instance_type", type=str, default="nvidia-l4",
                       help="Instance type")
-    
+    parser.add_argument("--min-replica", type=str, default="0",
+                        help="Minimum number of replicas")
+    parser.add_argument("--max-replica", type=str, default="1",
+                        help="Maximum number of replicas")
+    parser.add_argument("--scale-to-zero-timeout", type=str, default="60",
+                        help="Scale to zero timeout")
+
     # Environment variables
     # parser.add_argument("--disable_sliding_window", type=str, default="true",
     #                   help="Disable sliding window")
@@ -37,8 +43,8 @@ def parse_args():
     #                   help="Maximum model length")
     # parser.add_argument("--max_num_batched_tokens", type=str, default="8192",
     #                   help="Maximum number of batched tokens")
-    parser.add_argument("--dtype", type=str, default="bfloat16",
-                      help="Data type")
+    # parser.add_argument("--dtype", type=str, default="bfloat16",
+    #                   help="Data type")
     # parser.add_argument("--gpu_memory_utilization", type=str, default="0.98",
     #                   help="GPU memory utilization")
     # parser.add_argument("--quantization", type=str, default="fp8",
@@ -65,12 +71,12 @@ if __name__ == "__main__":
         # "DISABLE_SLIDING_WINDOW": args.disable_sliding_window,
         # "MAX_MODEL_LEN": args.max_model_len,
         # "MAX_NUM_BATCHED_TOKENS": args.max_num_batched_tokens,
-        "DTYPE": args.dtype,
+        # "DTYPE": args.dtype,
         # "GPU_MEMORY_UTILIZATION": args.gpu_memory_utilization,
         # "QUANTIZATION": args.quantization,
         # "USE_V2_BLOCK_MANAGER": args.use_v2_block_manager,
         # "VLLM_ATTENTION_BACKEND": args.vllm_attention_backend,
-        "TRUST_REMOTE_CODE": args.trust_remote_code,
+        # "TRUST_REMOTE_CODE": args.trust_remote_code,
     }
 
     endpoint = create_inference_endpoint(
@@ -89,7 +95,10 @@ if __name__ == "__main__":
             "env": env_vars,
             "url": VLLM_HF_IMAGE_URL,
         },
-        token=os.getenv("HF_TOKEN"),
+        min_replicas=args.min_replica,
+        max_replicas=args.max_replica,
+        scale_to_zero_timeout=args.scale_to_zero_timeout,
+        # token=os.getenv("HF_TOKEN"),
     )
     
     print(f"Go to https://ui.endpoints.huggingface.co/{endpoint.namespace}/endpoints/{endpoint.name} to see the endpoint status.")
