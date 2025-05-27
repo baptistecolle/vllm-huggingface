@@ -23,7 +23,7 @@ TRUST_REMOTE_CODE=${TRUST_REMOTE_CODE:-false}
 
 
 # Entrypoint for the OpenAI API server
-CMD="vllm serve $MODEL_PATH --host '0.0.0.0' --port 80 --tensor-parallel-size '$NUM_SHARD'"
+CMD="vllm serve $MODEL_PATH --host '0.0.0.0' --port 80 --tensor-parallel-size '$NUM_SHARD' --enable-auto-tool-choice --tool-call-parser hermes"
 # CMD="$CMD --dtype $DTYPE --guided-decoding-backend $GUIDED_DECODING_BACKEND --kv-cache-dtype $KV_CACHE_DTYPE"
 # CMD="$CMD --gpu-memory-utilization $GPU_MEMORY_UTILIZATION"
 
