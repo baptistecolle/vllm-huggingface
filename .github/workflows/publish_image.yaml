@@ -14,6 +14,8 @@ jobs:
   build-and-push:
     runs-on: ubuntu-latest
     steps:
+
+    # Needed because the vllm image is too large for the default disk space
     - name: Free Disk Space
       uses: jlumbroso/free-disk-space@main
       with:
@@ -34,7 +36,7 @@ jobs:
     - name: Build and push
       uses: docker/build-push-action@v5
       with:
-        context: .
+        context: ./docker
         push: true
         tags: |
           ghcr.io/${{ github.repository_owner }}/vllm-huggingface:latest
